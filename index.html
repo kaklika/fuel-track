@@ -4,6 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Fuel &amp; Route Log</title>
+  <link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0f6b4f">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
 <style>
 :root{--bg:#eef1ec;--surface:#fff;--ink:#1d2a24;--muted:#5f6d66;--line:#d3dad4;--accent:#0f6b4f;--accent-ink:#fff;--warn:#b45309;--bad:#b42318;--ok:#0f6b4f;
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -129,6 +133,7 @@ function initCloud(){
 if(!window.firebase||FIREBASE_CONFIG.apiKey==="PASTE_HERE")return;
 try{firebase.initializeApp(FIREBASE_CONFIG)}catch(e){console.error(e);return}
 var auth=firebase.auth(),fs=firebase.firestore();
+  fs.enablePersistence({synchronizeTabs:true}).catch(function(){});
 var msg=function(t){$("#lmsg").textContent=t||""};
 function go(fn){var e=$("#lem").value.trim(),p=$("#lpw").value;msg("");fn(e,p).catch(function(x){msg(x.message)})}
 $("#li").onclick=function(){go(function(e,p){return auth.signInWithEmailAndPassword(e,p)})};
@@ -244,6 +249,13 @@ var a=document.createElement("a");a.href="data:text/csv;charset=utf-8,"+encodeUR
 var v=S.veh;if(v.reg){vf.reg.value=v.reg;vf.regEnd.value=v.regEnd||"";vf.taxEnd.value=v.taxEnd||"";vf.pucEnd.value=v.pucEnd||""}
 resetFuel();resetRoute();render();initCloud();
 })();
+</script>
+  <script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function () {
+    navigator.serviceWorker.register("sw.js").catch(function (e) { console.error(e); });
+  });
+}
 </script>
 </body>
 </html>
